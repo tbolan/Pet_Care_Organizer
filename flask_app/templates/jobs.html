@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Calendar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="container p-0 d-flex justify-content-between">
+            <h1>Hey there {{ session["first_name"] }}, let's get organized !</h1>
+            <div>
+                <a href="/pets">Pets</a>
+                <a href="/jobs/add" class="ms-4">Add Job</a>
+                <a href="/logout" class="ms-4">Logout</a>
+            </div>
+        </div>
+
+        <div class="container p-0 mt-4">
+            <p>My Jobs</p>
+        </div>
+        <table class="table table-info table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Pet Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for j in my_jobs %}
+                <tr>
+                    <td>{{ j.pet_name }}</td>
+                    <td>{{ j.date }}</td>
+                    <td>{{ j.time_st }}</td>
+                    <td>{{ j.time_end }}</td>
+                    <td>
+                        <a href="/jobs/view/{{ j.id }}">Details</a>
+                        {% if session["id"] == j["completer_user_id"] %}
+                            <a href="/jobs/complete/{{ j.id }}">Mark Completed</a>
+                            <a href="/jobs/return/{{ j.id }}">Cancel and Make Public</a>
+                        {% endif %}
+                        {% if session["id"] == j["poster_user_id"] %}
+                            <a href="/jobs/edit/{{ j.id }}">Edit</a>
+                            <a href="/jobs/delete/{{ j.id }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="container p-0 mt-4">
+            <p>Posted Jobs</p>
+        </div>
+        <table class="table table-info table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Pet Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for j in posted_jobs %}
+                <tr>
+                    <td>{{ j.pet_name }}</td>
+                    <td>{{ j["date"] }}</td>
+                    <td>{{ j["time_st"] }}</td>
+                    <td>{{ j["time_end"] }}</td>
+                    <td>
+                        <a href="/jobs/view/{{ j["id"] }}">Details</a>
+                        <a href="/jobs/accept/{{ j["id"] }}">Accept</a>
+                        {% if session["id"] == j["poster_user_id"] %}
+                            <a href="/jobs/edit/{{ j["id"] }}">Edit</a>
+                            <a href="/jobs/delete/{{ j["id"] }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>
